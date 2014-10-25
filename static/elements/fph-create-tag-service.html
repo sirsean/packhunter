@@ -1,0 +1,30 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="fph-create-tag-service" attributes="name public">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+
+    <core-ajax id="service"
+      url="/api/tags"
+      method="post"
+      params='{"name":"{{name}}", "public":{{public}}}'
+      on-core-response="{{loaded}}"
+      handleAs="json"></core-ajax>
+  </template>
+  <script>
+  Polymer({
+    load: function() {
+      this.$.service.go();
+    },
+    loaded: function() {
+      var tag = this.$.service.response;
+      this.fire("tag-created", {tag:tag});
+    }
+  });
+  </script>
+</polymer-element>
