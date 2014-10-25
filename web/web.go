@@ -7,7 +7,7 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/sirsean/friendly-ph/config"
 	"github.com/sirsean/friendly-ph/model"
-	//"github.com/sirsean/friendly-ph/service"
+	"github.com/sirsean/friendly-ph/service"
 	"gopkg.in/mgo.v2"
 	"io"
 	"log"
@@ -93,7 +93,6 @@ func CurrentUser(r *http.Request, s *mgo.Session) (user model.User, err error) {
 		err = errors.New("no user")
 		return
 	}
-	err = errors.New("no user!")
-	//user, err = service.GetUserByIdHex(s, userId.(string))
+	user, err = service.GetUserByIdHex(s, userId.(string))
 	return
 }

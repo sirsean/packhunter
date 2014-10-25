@@ -1,0 +1,63 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-scaffold/core-scaffold.html">
+<link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
+<link rel="import" href="/bower_components/core-menu/core-menu.html">
+<link rel="import" href="/bower_components/core-item/core-item.html">
+
+<link rel="import" href="/elements/fph-my-tags-service.html">
+<link rel="import" href="/elements/fph-show-tag-service.html">
+<link rel="import" href="/elements/fph-tag-products-service.html">
+
+<polymer-element name="fph-page-index">
+  <template>
+    <fph-my-tags-service id="myTags" tags="{{tags}}"></fph-my-tags-service>
+    <fph-show-tag-service id="showTag" tagId="{{tagId}}" tag="{{tag}}"></fph-show-tag-service>
+    <fph-tag-products-service id="tagProducts" tagId="{{tagId}}" products="{{products}}"></fph-tag-products-service>
+
+    <core-scaffold>
+      <core-header-panel navigation flex>
+        <core-menu on-core-select="{{tagSelected}}">
+          <template repeat="{{tag in tags}}">
+            <core-item label="{{tag.Name}}" id="{{tag.Id}}"></core-item>
+          </template>
+        </core-menu>
+      </core-header-panel>
+
+      <template if="{{tag != null}}">
+        <span tool>{{tag.Name}}</span>
+      </template>
+
+      <div class="content">
+        <template if="{{tag.Id}}">
+          <template if="{{products.length == 0}}">
+            <p>No products</p>
+          </template>
+          <template if="{{products.length != 0}}">
+            <template repeat="{{product in products}}">
+              <p>
+                {{product.tag_votes}}:
+                <a target="_blank" href="{{product.discussion_url}}">{{product.name}}</a>
+                {{product.created_at}}
+              </p>
+            </template>
+          </template>
+        </template>
+        <template if="{{!tag.Id}}">
+          <p>Select a tag!</p>
+        </template>
+      </div>
+    </core-scaffold>
+  </template>
+  <script>
+  Polymer({
+    tagSelected: function(e, detail) {
+      console.log(e);
+      console.log(detail);
+      if (detail.isSelected) {
+        console.log(detail.item.id);
+        this.tagId = detail.item.id;
+      }
+    }
+  });
+  </script>
+</polymer-element>

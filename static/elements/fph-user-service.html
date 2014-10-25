@@ -1,0 +1,48 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="fph-user-service">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+
+    <core-ajax id="logout"
+      url="/api/user/logout"
+      method="get"
+      on-core-response="{{logoutLoaded}}">
+    </core-ajax>
+  </template>
+  <script>
+  (function() {
+    var values = {};
+
+    Polymer({
+       ready: function() {
+         this.values = values;
+         for (var i = 0; i < this.attributes.length; ++i) {
+           var attr = this.attributes[i];
+           console.log(attr);
+           console.log(attr.nodeName);
+           console.log(attr.value);
+           values[attr.nodeName] = attr.value;
+         }
+         this.user_id = values.user_id;
+         this.username = values.username;
+       },
+       loggedIn: function() {
+         return !!this.user_id;
+       },
+       logout: function() {
+         this.$.logout.go();
+       },
+       logoutLoaded: function() {
+         console.log(this.$.logout.response);
+         window.location.href = "/";
+       }
+    });
+  })();
+  </script>
+</polymer-element>

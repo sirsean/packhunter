@@ -1,0 +1,32 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="fph-my-tags-service" attributes="tags">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+
+    <core-ajax id="service"
+      url="/api/tags/mine"
+      method="get"
+      on-core-response="{{loaded}}"
+      handleAs="json"
+      auto></core-ajax>
+  </template>
+  <script>
+  Polymer({
+    created: function() {
+      this.tags = [];
+    },
+    load: function() {
+      this.$.service.go();
+    },
+    loaded: function() {
+      this.tags = this.$.service.response.slice(0);
+    }
+  });
+  </script>
+</polymer-element>

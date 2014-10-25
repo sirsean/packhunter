@@ -17,6 +17,11 @@ type Config struct {
 		Port string
 		Path string
 	}
+	ProductHunt struct {
+		Endpoint string
+		ApiKey string
+		ApiSecret string
+	}
 	CookieStore struct {
 		AuthenticationKey string
 	}

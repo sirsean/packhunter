@@ -1,0 +1,59 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="/elements/fph-user-service.html">
+
+<polymer-element name="fph-header">
+  <template>
+    <style>
+    :host {
+      display: block;
+      padding-left: 10px;
+    }
+    </style>
+
+    <fph-user-service id="user_service"></fph-user-service>
+
+    <div class="core-header">
+      <div layout horizontal center>
+        <div>
+          <a href="/"><h1>Friendly Product Hunt</h1></a>
+        </div>
+        <div flex></div>
+        <div>
+          <template if="{{loggedIn}}">
+            <div layout horizontal center>
+              <p>{{username}} is logged in</p>
+              <p><paper-button label="Log out" on-tap="{{logoutTapped}}"></paper-button></p>
+            </div>
+          </template>
+          <template if="{{!loggedIn}}">
+            <p>
+              <paper-button label="Sign In" on-tap="{{signinTapped}}"></paper-button>
+            </p>
+          </template>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script>
+  Polymer({
+    ready: function() {
+      console.log(this.$);
+      console.log(this.$.user_service);
+      console.log(this.$.user_service.user_id);
+      console.log(this.$.user_service.username);
+      this.username = this.$.user_service.username;
+      this.loggedIn = this.$.user_service.loggedIn();
+    },
+    signinTapped: function() {
+      console.log("signin");
+      window.location.href = "/signin";
+    },
+    logoutTapped: function() {
+      console.log("logout");
+      this.$.user_service.logout();
+    }
+  });
+  </script>
+</polymer-element>
