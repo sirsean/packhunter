@@ -10,6 +10,7 @@
 <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="/bower_components/paper-dialog/paper-dialog-transition.html">
 
+<link rel="import" href="/elements/fph-user-service.html">
 <link rel="import" href="/elements/fph-my-tags-service.html">
 <link rel="import" href="/elements/fph-all-users-service.html">
 <link rel="import" href="/elements/fph-show-tag-service.html">
@@ -54,6 +55,11 @@
 
     paper-tabs::shadow #selectionBar {
       background-color: #DA552F;
+    }
+
+    .notLoggedIn {
+      padding: 40px;
+      text-align: center;
     }
 
     #products {
@@ -142,6 +148,7 @@
     }
     </style>
 
+    <fph-user-service id="user_service"></fph-user-service>
     <fph-my-tags-service
       id="myTags"
       tags="{{tags}}"></fph-my-tags-service>
@@ -165,88 +172,97 @@
       tag="{{tag}}"
       on-hunters-set="{{onHuntersSet}}"></fph-set-hunters-service>
 
-    <div layout horizontal>
-      <core-menu on-core-select="{{tagSelected}}">
-        <template repeat="{{tag in tags}}">
-          <core-item id="{{tag.Id}}" class="tag">
-            <div layout horizontal center flex>
-              <div class="name"># {{tag.Name}}</div>
-              <div flex></div>
-              <div class="count">{{tag.UserCount}} hunters</div>
-            </div>
-          </core-item>
-        </template>
-        <core-item label="New Pack" id="newTag"></core-item>
-      </core-menu>
+    <template if="{{!loggedInUsername}}">
+      <div class="notLoggedIn">
+        <h2>Hunt in packs!</h2>
+        <p>See what products are popular on Product Hunt among the people you follow.</p>
+      </div>
+    </template>
 
-      <div flex>
-        <div hidden?="{{!tag.Id}}">
-          <paper-tabs id="tabs" valueattr="name" selected="products">
-            <paper-tab name="products">Hunts</paper-tab>
-            <paper-tab name="users">Hunters</paper-tab>
-          </paper-tabs>
-          <div id="products" hidden?="{{selected != 'products'}}">
-            <template if="{{products.length == 0}}">
-              <p>No products</p>
-            </template>
-            <template if="{{products.length != 0}}">
-              <template repeat="{{product in products}}">
-                <div layout horizontal center class="product">
-                  <div layout vertical center class="votes">
-                    <core-icon class="icon" icon="expand-less"></core-icon>
-                    <span class="numPackVotes">{{product.tag_votes}}</span>
-                    <span class="packVotesDescription">pack vote<template if="{{product.tag_votes != 1}}">s</template></span>
-                  </div>
-                  <div layout vertical start flex class="description">
-                    <span class="name">{{product.name}}</span>
-                    <span class="tagline">{{product.tagline}}</span>
-                  </div>
-                  <div layout vertical end class="detail">
-                    <span class="explain">Hunt with the big pack</span>
-                    <div layout horizontal center>
-                      <span class="number">{{product.votes_count}}</span> Votes
-                      <span class="number">{{product.comments_count}}</span> Comments
+    <template if="{{loggedInUsername}}">
+      <div layout horizontal>
+        <core-menu on-core-select="{{tagSelected}}">
+          <template repeat="{{tag in tags}}">
+            <core-item id="{{tag.Id}}" class="tag">
+              <div layout horizontal center flex>
+                <div class="name"># {{tag.Name}}</div>
+                <div flex></div>
+                <div class="count">{{tag.UserCount}} hunters</div>
+              </div>
+            </core-item>
+          </template>
+          <core-item label="New Pack" id="newTag"></core-item>
+        </core-menu>
+
+        <div flex>
+          <div hidden?="{{!tag.Id}}">
+            <paper-tabs id="tabs" valueattr="name" selected="products">
+              <paper-tab name="products">Hunts</paper-tab>
+              <paper-tab name="users">Hunters</paper-tab>
+            </paper-tabs>
+            <div id="products" hidden?="{{selected != 'products'}}">
+              <template if="{{products.length == 0}}">
+                <p>No products</p>
+              </template>
+              <template if="{{products.length != 0}}">
+                <template repeat="{{product in products}}">
+                  <div layout horizontal center class="product">
+                    <div layout vertical center class="votes">
+                      <core-icon class="icon" icon="expand-less"></core-icon>
+                      <span class="numPackVotes">{{product.tag_votes}}</span>
+                      <span class="packVotesDescription">pack vote<template if="{{product.tag_votes != 1}}">s</template></span>
+                    </div>
+                    <div layout vertical start flex class="description">
+                      <span class="name">{{product.name}}</span>
+                      <span class="tagline">{{product.tagline}}</span>
+                    </div>
+                    <div layout vertical end class="detail">
+                      <span class="explain">Hunt with the big pack</span>
+                      <div layout horizontal center>
+                        <span class="number">{{product.votes_count}}</span> Votes
+                        <span class="number">{{product.comments_count}}</span> Comments
+                      </div>
                     </div>
                   </div>
-                </div>
+                </template>
               </template>
-            </template>
-          </div>
-          <div id="users" hidden?="{{selected != 'users'}}">
-            <div>
-              <paper-button label="Set Hunters" on-tap="{{setHuntersTapped}}"></paper-button>
             </div>
-            <template if="{{tag.Users.length == 0}}">
-              <p>No users</p>
-            </template>
-            <template if="{{tag.Users.length != 0}}">
-              <template repeat="{{user in tag.Users}}">
-                <div layout horizontal center class="user">
-                  <img src="{{user.image_url['48px']}}" width="48px" />
-                  <div layout vertical start class="detail" flex>
-                    <span class="name">{{user.name}}</span>
-                    <span class="headline">{{user.headline}}</span>
-                  </div>
-                  <div layout vertical start>
-                    <a target="_blank" href="{{user.profile_url}}"><strong>{{user.username}}</strong> on Product Hunt</a>
-                  </div>
-                </div>
+            <div id="users" hidden?="{{selected != 'users'}}">
+              <div>
+                <paper-button label="Set Hunters" on-tap="{{setHuntersTapped}}"></paper-button>
+              </div>
+              <template if="{{tag.Users.length == 0}}">
+                <p>No users</p>
               </template>
+              <template if="{{tag.Users.length != 0}}">
+                <template repeat="{{user in tag.Users}}">
+                  <div layout horizontal center class="user">
+                    <img src="{{user.image_url['48px']}}" width="48px" />
+                    <div layout vertical start class="detail" flex>
+                      <span class="name">{{user.name}}</span>
+                      <span class="headline">{{user.headline}}</span>
+                    </div>
+                    <div layout vertical start>
+                      <a target="_blank" href="{{user.profile_url}}"><strong>{{user.username}}</strong> on Product Hunt</a>
+                    </div>
+                  </div>
+                </template>
+              </template>
+            </div>
+          </div>
+          <div hidden?="{{tag.Id}}">
+            <template if="{{newTagForm}}">
+              <paper-input label="Name" value="{{newTagName}}"></paper-input>
+              <paper-toggle-button checked="{{newTagPublic}}"></paper-toggle-button>
+              <paper-button label="Create Tag" on-tap="{{newTagTapped}}"></paper-button>
+            </template>
+            <template if="{{!newTagForm}}">
+              <p>Select a tag!</p>
             </template>
           </div>
-        </div>
-        <div hidden?="{{tag.Id}}">
-          <template if="{{newTagForm}}">
-            <paper-input label="Name" value="{{newTagName}}"></paper-input>
-            <paper-toggle-button checked="{{newTagPublic}}"></paper-toggle-button>
-            <paper-button label="Create Tag" on-tap="{{newTagTapped}}"></paper-button>
-          </template>
-          <template if="{{!newTagForm}}">
-            <p>Select a tag!</p>
-          </template>
         </div>
       </div>
-    </div>
+    </template>
 
     <paper-dialog id="setHuntersDialog" heading="Hunters" transition="paper-dialog-transition-bottom">
       <div layout vertical>
@@ -286,8 +302,7 @@
       return c;
     },
     ready: function() {
-      console.log("Ready");
-      console.log(this.$.tabs);
+      this.loggedInUsername = this.$.user_service.username;
       this.$.tabs.addEventListener("core-select", function(e) {
         console.log("SELECT");
         console.log(e);
