@@ -62,6 +62,12 @@
       text-align: center;
     }
 
+    .empty {
+      padding: 90px;
+      text-align: center;
+      font-style: italic;
+    }
+
     #products {
       padding: 30px;
     }
@@ -172,14 +178,14 @@
       tag="{{tag}}"
       on-hunters-set="{{onHuntersSet}}"></fph-set-hunters-service>
 
-    <template if="{{!loggedInUsername}}">
+    <div hidden?="{{loggedInUsername}}">
       <div class="notLoggedIn">
         <h2>Hunt in packs!</h2>
         <p>See what products are popular on Product Hunt among the people you follow.</p>
       </div>
-    </template>
+    </div>
 
-    <template if="{{loggedInUsername}}">
+    <div hidden?="{{!loggedInUsername}}">
       <div layout horizontal>
         <core-menu on-core-select="{{tagSelected}}">
           <template repeat="{{tag in tags}}">
@@ -202,7 +208,7 @@
             </paper-tabs>
             <div id="products" hidden?="{{selected != 'products'}}">
               <template if="{{products.length == 0}}">
-                <p>No products</p>
+                <div class="empty">No products</div>
               </template>
               <template if="{{products.length != 0}}">
                 <template repeat="{{product in products}}">
@@ -232,7 +238,7 @@
                 <paper-button label="Set Hunters" on-tap="{{setHuntersTapped}}"></paper-button>
               </div>
               <template if="{{tag.Users.length == 0}}">
-                <p>No users</p>
+                <div class="empty">No users</div>
               </template>
               <template if="{{tag.Users.length != 0}}">
                 <template repeat="{{user in tag.Users}}">
@@ -257,12 +263,12 @@
               <paper-button label="Create Tag" on-tap="{{newTagTapped}}"></paper-button>
             </template>
             <template if="{{!newTagForm}}">
-              <p>Select a tag!</p>
+              <div class="empty">Select a tag!</div>
             </template>
           </div>
         </div>
       </div>
-    </template>
+    </div>
 
     <paper-dialog id="setHuntersDialog" heading="Hunters" transition="paper-dialog-transition-bottom">
       <div layout vertical>
