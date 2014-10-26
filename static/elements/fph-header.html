@@ -8,31 +8,42 @@
     <style>
     :host {
       display: block;
-      padding-left: 10px;
+      font-family: 'Roboto', sans-serif;
+      border-bottom: 2px solid #DA552F;
+    }
+
+    a {
+      text-decoration: none;
+      color: #DA552F;
+    }
+
+    .title {
+      letter-spacing: 5px;
+      font-weight: 300;
+      text-transform: uppercase;
+      font-size: 40px;
     }
     </style>
 
     <fph-user-service id="user_service"></fph-user-service>
 
-    <div class="core-header">
-      <div layout horizontal center>
-        <div>
-          <a href="/"><h1>Friendly Product Hunt</h1></a>
-        </div>
-        <div flex></div>
-        <div>
-          <template if="{{loggedIn}}">
-            <div layout horizontal center>
-              <p><a href="/user/{{username}}">{{username}}</a> is logged in</p>
-              <p><paper-button label="Log out" on-tap="{{logoutTapped}}"></paper-button></p>
-            </div>
-          </template>
-          <template if="{{!loggedIn}}">
-            <p>
-              <paper-button label="Sign In" on-tap="{{signinTapped}}"></paper-button>
-            </p>
-          </template>
-        </div>
+    <div layout horizontal justified center>
+      <div style="height:90px;">logo</div>
+      <div class="title">
+        <a href="/">PackHunter</a>
+      </div>
+      <div>
+        <template if="{{loggedIn}}">
+          <div layout horizontal center>
+            <span><a href="/user/{{username}}">{{username}}</a> is logged in</span>
+            <span><paper-button label="Log out" on-tap="{{logoutTapped}}"></paper-button></span>
+          </div>
+        </template>
+        <template if="{{!loggedIn}}">
+          <p>
+            <paper-button label="Sign In" on-tap="{{signinTapped}}"></paper-button>
+          </p>
+        </template>
       </div>
     </div>
   </template>

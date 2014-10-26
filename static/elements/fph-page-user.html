@@ -44,15 +44,17 @@
         <template repeat="{{tag in user.public_tags}}">
           <li>
             {{tag.Name}}
-            <template if="{{tag.Subscribed}}">
-              <fph-unsubscribe-button
-                tag="{{tag}}"
-                on-unsubscribed="{{onUnsubscribed}}"></fph-unsubscribe-button>
-            </template>
-            <template if="{{!tag.Subscribed}}">
-              <fph-subscribe-button
-                tag="{{tag}}"
-                on-subscribed="{{onSubscribed}}"></fph-subscribe-button>
+            <template if="{{username != loggedInUsername}}">
+              <template if="{{tag.Subscribed}}">
+                <fph-unsubscribe-button
+                  tag="{{tag}}"
+                  on-unsubscribed="{{onUnsubscribed}}"></fph-unsubscribe-button>
+              </template>
+              <template if="{{!tag.Subscribed}}">
+                <fph-subscribe-button
+                  tag="{{tag}}"
+                  on-subscribed="{{onSubscribed}}"></fph-subscribe-button>
+              </template>
             </template>
           </li>
         </template>

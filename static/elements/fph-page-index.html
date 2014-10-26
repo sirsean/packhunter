@@ -20,6 +20,39 @@
 
 <polymer-element name="fph-page-index">
   <template>
+    <style>
+    core-menu {
+      margin: 0px;
+      font-family: "Open Sans", sans-serif;
+    }
+
+    core-item.tag {
+      height: 60px;
+      color: #DA552F;
+      border-bottom: 2px solid #DA552F;
+      border-right: 2px solid #DA552F;
+    }
+
+    core-item.tag .name {
+      font-size: 20px;
+      line-height: 28px;
+      padding: 16px 20px;
+    }
+
+    core-item.tag .count {
+      font-weight: bold;
+      font-size: 11px;
+      line-height: 16px;
+      padding: 0px 6px;
+    }
+
+    core-item.tag.core-selected {
+      background-color: #DA552F;
+      color: white;
+      font-weight: normal;
+    }
+    </style>
+
     <fph-my-tags-service
       id="myTags"
       tags="{{tags}}"></fph-my-tags-service>
@@ -47,15 +80,15 @@
       <core-header-panel navigation flex>
         <core-menu on-core-select="{{tagSelected}}">
           <template repeat="{{tag in tags}}">
-            <core-item id="{{tag.Id}}">
-              <div layout horizontal center style="width:100%;">
-                <div>{{tag.Name}}</div>
+            <core-item id="{{tag.Id}}" class="tag">
+              <div layout horizontal center flex>
+                <div class="name"># {{tag.Name}}</div>
                 <div flex></div>
-                <div>{{tag.UserCount}}</div>
+                <div class="count">{{tag.UserCount}} hunters</div>
               </div>
             </core-item>
           </template>
-          <core-item label="New Tag" id="newTag"></core-item>
+          <core-item label="New Pack" id="newTag"></core-item>
         </core-menu>
       </core-header-panel>
 
