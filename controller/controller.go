@@ -109,8 +109,8 @@ func SigninRedirect(w http.ResponseWriter, r *http.Request) {
 	user.AccessToken = accessToken
 	service.SaveUser(session, &user)
 
-	service.EnsureUncategorizedTag(session, &user)
-	service.SyncUncategorizedTag(session, &user)
+	service.EnsureFollowingTag(session, &user)
+	service.SyncFollowingTag(session, &user)
 
 	web.Login(w, r, user)
 	http.Redirect(w, r, "/", 302)

@@ -30,20 +30,20 @@ func CreateTag(session *mgo.Session, user *model.User, tag *model.Tag) {
 	SaveUser(session, user)
 }
 
-func EnsureUncategorizedTag(session *mgo.Session, user *model.User) {
-	if _, err := user.Tag("#Uncategorized"); err != nil {
+func EnsureFollowingTag(session *mgo.Session, user *model.User) {
+	if _, err := user.Tag("Following"); err != nil {
 		tag := model.Tag{
-			Name: "#Uncategorized",
+			Name: "Following",
 			Public: false,
 		}
 		CreateTag(session, user, &tag)
 	}
 }
 
-func SyncUncategorizedTag(session *mgo.Session, user *model.User) {
+func SyncFollowingTag(session *mgo.Session, user *model.User) {
 	coll := tagCollection(session)
 
-	if basicTag, err := user.Tag("#Uncategorized"); err == nil {
+	if basicTag, err := user.Tag("Following"); err == nil {
 		tag, _ := GetTagByIdHex(session, basicTag.Id)
 
 		users := ph.Following(user.AccessToken, user.PHId)
