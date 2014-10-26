@@ -62,6 +62,10 @@
       text-align: center;
     }
 
+    .newTagForm {
+      margin: 90px 200px;
+    }
+
     .empty {
       padding: 90px;
       text-align: center;
@@ -82,7 +86,7 @@
     }
 
     .product .description {
-      padding: 4px;
+      padding: 4px 14px;
     }
 
     .product .detail {
@@ -91,11 +95,16 @@
       text-transform: uppercase;
       font-size: 12px;
     }
-    
+
     .product .detail .explain {
       color: #DA552F;
     }
 
+    .product .detail .explain a {
+      color: #DA552F;
+      text-decoration: none;
+    }
+    
     .product .detail .number {
       color: black;
       font-size: 18px;
@@ -116,7 +125,11 @@
 
     .product .name {
       font-size: 36px;
-      font-weight: bold;
+    }
+
+    .product .name a {
+      color: black;
+      text-decoration: none;
     }
 
     .product .tagline {
@@ -219,11 +232,11 @@
                       <span class="packVotesDescription">pack vote<template if="{{product.tag_votes != 1}}">s</template></span>
                     </div>
                     <div layout vertical start flex class="description">
-                      <span class="name">{{product.name}}</span>
+                      <span class="name"><a target="_blank" href="{{product.redirect_url}}">{{product.name}}</a></span>
                       <span class="tagline">{{product.tagline}}</span>
                     </div>
                     <div layout vertical end class="detail">
-                      <span class="explain">Hunt with the big pack</span>
+                      <span class="explain"><a target="_blank" href="{{product.discussion_url}}">Hunt with the big pack</a></span>
                       <div layout horizontal center>
                         <span class="number">{{product.votes_count}}</span> Votes
                         <span class="number">{{product.comments_count}}</span> Comments
@@ -258,9 +271,18 @@
           </div>
           <div hidden?="{{tag.Id}}">
             <template if="{{newTagForm}}">
-              <paper-input label="Name" value="{{newTagName}}"></paper-input>
-              <paper-toggle-button checked="{{newTagPublic}}"></paper-toggle-button>
-              <paper-button label="Create Tag" on-tap="{{newTagTapped}}"></paper-button>
+              <div class="newTagForm" layout vertical start>
+                <div>
+                  <paper-input label="Name" value="{{newTagName}}"></paper-input>
+                </div>
+                <div>
+                  Public
+                  <paper-toggle-button checked="{{newTagPublic}}"></paper-toggle-button>
+                </div>
+                <div>
+                  <paper-button label="Form Your Pack" on-tap="{{newTagTapped}}"></paper-button>
+                </div>
+              </div>
             </template>
             <template if="{{!newTagForm}}">
               <div class="empty">Select a tag!</div>
@@ -275,7 +297,7 @@
         <template repeat="{{u in users}}">
           <div layout horizontal center style="padding-bottom:20px;">
             <paper-checkbox checked="{{checked[u.username]}}"></paper-checkbox>
-            {{u.username}}
+            <span style="padding-left: 10px;">{{u.username}}</span>
           </div>
         </template>
       </div>
@@ -333,7 +355,6 @@
       }
     },
     newTagTapped: function() {
-      console.log("create tag");
       this.$.createTag.load();
     },
     onTagCreated: function(e, detail) {
