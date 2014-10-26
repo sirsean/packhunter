@@ -1,4 +1,5 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-icons/core-icons.html">
 <link rel="import" href="/bower_components/core-menu/core-menu.html">
 <link rel="import" href="/bower_components/core-item/core-item.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
@@ -49,6 +50,40 @@
       background-color: #DA552F;
       color: white;
       font-weight: normal;
+    }
+
+    .product {
+      font-family: "Open Sans", sans-serif;
+    }
+
+    .product .votes {
+      padding: 8px;
+    }
+
+    .product .description {
+      padding: 4px;
+    }
+
+    .product .icon {
+      color: #DA552F;
+    }
+
+    .product .numPackVotes {
+      font-size: 24px;
+    }
+
+    .product .packVotesDescription {
+      font-size: 12px;
+    }
+
+    .product .name {
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    .product .tagline {
+      font-size: 20px;
+      color: #666666;
     }
     </style>
 
@@ -101,6 +136,18 @@
             </template>
             <template if="{{products.length != 0}}">
               <template repeat="{{product in products}}">
+                <div layout horizontal center class="product">
+                  <div layout vertical center class="votes">
+                    <core-icon class="icon" icon="expand-less"></core-icon>
+                    <span class="numPackVotes">{{product.tag_votes}}</span>
+                    <span class="packVotesDescription">pack vote<template if="{{product.tag_votes != 1}}">s</template></span>
+                  </div>
+                  <div layout vertical start class="description">
+                    <span class="name">{{product.name}}</span>
+                    <span class="tagline">{{product.tagline}}</span>
+                  </div>
+                </div>
+                <!--
                 <div layout horizontal center>
                   <p>{{product.tag_votes}}</p>
                   <p><a target="_blank" href="{{product.discussion_url}}">{{product.name}}</a></p>
@@ -112,6 +159,7 @@
                   <p>Comments: {{product.comments_count}}</p>
                   <p>Votes: {{product.votes_count}}</p>
                 </div>
+                -->
               </template>
             </template>
           </div>
