@@ -67,7 +67,7 @@ func Signin(w http.ResponseWriter, r *http.Request) {
 	url := fmt.Sprintf("%v/oauth/authorize?client_id=%v&redirect_uri=%v&response_type=code&scope=public private",
 		config.Get().ProductHunt.Endpoint,
 		config.Get().ProductHunt.ApiKey,
-		"http://localhost:5050/signin_redirect")
+		fmt.Sprintf("%v/signin_redirect", config.Get().Host.Name))
 	http.Redirect(w, r, url, 302)
 }
 
@@ -80,7 +80,7 @@ func SigninRedirect(w http.ResponseWriter, r *http.Request) {
 	payload := map[string]string{
 		"client_id":     config.Get().ProductHunt.ApiKey,
 		"client_secret": config.Get().ProductHunt.ApiSecret,
-		"redirect_uri":  "http://localhost:5050/signin_redirect",
+		"redirect_uri":  fmt.Sprintf("%v/signin_redirect", config.Get().Host.Name),
 		"code":          code,
 		"grant_type":    "authorization_code",
 	}
