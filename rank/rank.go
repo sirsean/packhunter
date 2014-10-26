@@ -83,8 +83,6 @@ func ForTag(accessToken string, tag model.Tag) []Product {
 			log.Printf("votes %v", user.VotesCount)
 			for _, v := range user.Votes {
 				voteTracker.Add(v)
-				//productVotes[v.PostId] += 1
-				//productMap[v.PostId] = v.Post
 			}
 			wg.Done()
 		}(&wg, u, accessToken)

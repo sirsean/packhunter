@@ -32,6 +32,7 @@ func main() {
 	router.HandleFunc("/api/tags/{id}/products", api.GetTagProducts).Methods("GET")
 	router.HandleFunc("/api/tags", api.CreateTag).Methods("POST")
 	router.HandleFunc("/api/user/{username}", api.ShowUser).Methods("GET")
+	router.HandleFunc("/api/user/{username}/tags", api.SetUserTags).Methods("PUT")
 
 	router.HandleFunc("/api/logout", api.UserLogout).Methods("GET")
 

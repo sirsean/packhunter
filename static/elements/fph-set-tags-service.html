@@ -1,0 +1,30 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="fph-set-tags-service" attributes="username">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+
+    <core-ajax id="service"
+      url="/api/user/{{username}}/tags"
+      method="put"
+      params='{"tag_ids":{{tags}}}'
+      on-core-response="{{loaded}}"></core-ajax>
+  </template>
+  <script>
+  Polymer({
+    load: function(tags) {
+      this.tags = JSON.stringify(tags);
+      console.log(this.tags);
+      this.$.service.go();
+    },
+    loaded: function() {
+      this.fire("tags-set", {});
+    }
+  });
+  </script>
+</polymer-element>

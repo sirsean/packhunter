@@ -30,6 +30,27 @@ func CreateTag(session *mgo.Session, user *model.User, tag *model.Tag) {
 	SaveUser(session, user)
 }
 
+func SaveTag(session *mgo.Session, tag *model.Tag) {
+	coll := tagCollection(session)
+	coll.UpdateId(tag.Id, tag)
+}
+
+func TagsUserIsOn(session *mgo.Session, currentUser model.User, user ph.User) ([]model.BasicTag, error) {
+	tags := make([]model.BasicTag, 0)
+	for _, t := range currentUser.Tags {
+		tag, err := GetTagByIdHex(session, t.Id)
+		if err != nil {
+			return nil, err
+		}
+		for _, u := range tag.Users {
+			if u.Username == user.Username {
+				tags = append(tags, t)
+			}
+		}
+	}
+	return tags, nil
+}
+
 func EnsureFollowingTag(session *mgo.Session, user *model.User) {
 	if _, err := user.Tag("Following"); err != nil {
 		tag := model.Tag{

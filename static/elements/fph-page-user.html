@@ -1,14 +1,36 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog-transition.html">
 
+<link rel="import" href="/elements/fph-my-tags-service.html">
 <link rel="import" href="/elements/fph-show-user-service.html">
+<link rel="import" href="/elements/fph-set-tags-service.html">
 
 <polymer-element name="fph-page-user" attributes="username">
   <template>
+    <fph-my-tags-service
+      id="myTags"
+      tags="{{tags}}"></fph-my-tags-service>
     <fph-show-user-service
+      id="showUserService"
       username="{{username}}"
       user="{{user}}"></fph-show-user-service>
+    <fph-set-tags-service
+      id="setTagsService"
+      username="{{username}}"
+      on-tags-set="{{onTagsSet}}"></fph-set-tags-service>
 
     <h1>{{user.name}}</h1>
+    <div>
+      <ul>
+      <template repeat="{{tag in user.tags}}">
+        <li>{{tag.Name}}</li>
+      </template>
+      </ul>
+      <paper-button label="Add to Pack" on-tap="{{addToPackTapped}}"></paper-button>
+    </div>
     <img src="{{user.image_url.original}}" />
     <p>{{user.created_at}}</p>
     <p>{{user.headline}}</p>
@@ -33,9 +55,56 @@
         <img src="{{vote.post.screenshot_url['300px']}}" width="300px" />
       </template>
     </div>
+
+    <paper-dialog id="addTagDialog" heading="Packs" transition="paper-dialog-transition-bottom">
+      <div layout vertical>
+        <template repeat="{{tag in tags}}">
+          <div layout horizontal center style="padding-bottom:20px">
+            <paper-checkbox checked="{{checked[tag.Id]}}"></paper-checkbox>
+            {{tag.Name}}
+          </div>
+        </template>
+      </div>
+      <paper-button label="Cancel" dismissive></paper-button>
+      <paper-button label="Save" affirmative autofocus on-tap="{{saveTagsTapped}}"></paper-button>
+    </paper-dialog>
   </template>
   <script>
   Polymer({
+    computed: {
+      checked: "computeChecked(user, tags)"
+    },
+    computeChecked: function(user, tags) {
+      console.log("compute", user, tags);
+      var c = {};
+      if (tags && user && user.tags) {
+        tags.forEach(function(t) {
+          user.tags.forEach(function(ut) {
+            if (t.Id == ut.Id) {
+              c[t.Id] = true;
+            }
+          });
+        });
+      }
+      return c;
+    },
+    addToPackTapped: function() {
+      console.log("add to pack");
+      this.$.addTagDialog.toggle();
+    },
+    saveTagsTapped: function() {
+      console.log(this.checked);
+      var tagIds = [];
+      Object.keys(this.checked).forEach(function(key) {
+        if (this.checked[key]) {
+          tagIds.push(key);
+        }
+      }.bind(this));
+      this.$.setTagsService.load(tagIds);
+    },
+    onTagsSet: function(e) {
+      this.$.showUserService.load();
+    }
   });
   </script>
 </polymer-element>
