@@ -23,7 +23,7 @@
         <div>
           <template if="{{loggedIn}}">
             <div layout horizontal center>
-              <p>{{username}} is logged in</p>
+              <p><a href="/user/{{username}}">{{username}}</a> is logged in</p>
               <p><paper-button label="Log out" on-tap="{{logoutTapped}}"></paper-button></p>
             </div>
           </template>

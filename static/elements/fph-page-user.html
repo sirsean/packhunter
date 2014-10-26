@@ -4,12 +4,14 @@
 <link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="/bower_components/paper-dialog/paper-dialog-transition.html">
 
+<link rel="import" href="/elements/fph-user-service.html">
 <link rel="import" href="/elements/fph-my-tags-service.html">
 <link rel="import" href="/elements/fph-show-user-service.html">
 <link rel="import" href="/elements/fph-set-tags-service.html">
 
 <polymer-element name="fph-page-user" attributes="username">
   <template>
+    <fph-user-service id="user_service"></fph-user-service>
     <fph-my-tags-service
       id="myTags"
       tags="{{tags}}"></fph-my-tags-service>
@@ -23,14 +25,16 @@
       on-tags-set="{{onTagsSet}}"></fph-set-tags-service>
 
     <h1>{{user.name}}</h1>
-    <div>
-      <ul>
-      <template repeat="{{tag in user.tags}}">
-        <li>{{tag.Name}}</li>
-      </template>
-      </ul>
-      <paper-button label="Add to Pack" on-tap="{{addToPackTapped}}"></paper-button>
-    </div>
+    <template if="{{username != loggedInUsername}}">
+      <div>
+        <ul>
+        <template repeat="{{tag in user.tags}}">
+          <li>{{tag.Name}}</li>
+        </template>
+        </ul>
+        <paper-button label="Add to Pack" on-tap="{{addToPackTapped}}"></paper-button>
+      </div>
+    </template>
     <img src="{{user.image_url.original}}" />
     <p>{{user.created_at}}</p>
     <p>{{user.headline}}</p>
@@ -71,6 +75,9 @@
   </template>
   <script>
   Polymer({
+    ready: function() {
+      this.loggedInUsername = this.$.user_service.username;
+    },
     computed: {
       checked: "computeChecked(user, tags)"
     },
