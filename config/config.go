@@ -18,8 +18,8 @@ type Config struct {
 		Path string
 	}
 	ProductHunt struct {
-		Endpoint string
-		ApiKey string
+		Endpoint  string
+		ApiKey    string
 		ApiSecret string
 	}
 	CookieStore struct {

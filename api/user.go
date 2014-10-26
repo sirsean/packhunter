@@ -1,15 +1,15 @@
 package api
 
 import (
-	"strings"
 	"encoding/json"
-	"net/http"
 	"github.com/gorilla/mux"
-	"github.com/sirsean/friendly-ph/web"
-	"github.com/sirsean/friendly-ph/ph"
-	"github.com/sirsean/friendly-ph/mongo"
-	"github.com/sirsean/friendly-ph/service"
 	"github.com/sirsean/friendly-ph/model"
+	"github.com/sirsean/friendly-ph/mongo"
+	"github.com/sirsean/friendly-ph/ph"
+	"github.com/sirsean/friendly-ph/service"
+	"github.com/sirsean/friendly-ph/web"
+	"net/http"
+	"strings"
 )
 
 func ListMyUsers(w http.ResponseWriter, r *http.Request) {
@@ -41,13 +41,13 @@ func ShowUser(w http.ResponseWriter, r *http.Request) {
 
 	type UserResponse struct {
 		ph.User
-		Tags []model.BasicTag `json:"tags"`
+		Tags       []model.BasicTag           `json:"tags"`
 		PublicTags []model.BasicTagSubscribed `json:"public_tags"`
 	}
 
 	response, _ := json.Marshal(UserResponse{
-		User: user,
-		Tags: tags,
+		User:       user,
+		Tags:       tags,
 		PublicTags: publicTags,
 	})
 	w.Write(response)

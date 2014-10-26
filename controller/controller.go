@@ -1,24 +1,25 @@
 package controller
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
-	"gopkg.in/mgo.v2/bson"
 	"github.com/gorilla/mux"
 	"github.com/sirsean/friendly-ph/config"
 	"github.com/sirsean/friendly-ph/model"
 	"github.com/sirsean/friendly-ph/mongo"
+	"github.com/sirsean/friendly-ph/ph"
 	"github.com/sirsean/friendly-ph/service"
 	"github.com/sirsean/friendly-ph/web"
-	"github.com/sirsean/friendly-ph/ph"
+	"gopkg.in/mgo.v2/bson"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"encoding/json"
-	"bytes"
-	"io/ioutil"
 )
 
 var indexTemplate = buildTemplate("index.html")
+
 func Index(w http.ResponseWriter, r *http.Request) {
 	session := mongo.Session()
 	defer session.Close()
@@ -27,17 +28,18 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	log.Printf("index for %v", user)
 
 	type Data struct {
-		UserId string
+		UserId   string
 		Username string
 	}
 	data := Data{
-		UserId: user.UserId(),
+		UserId:   user.UserId(),
 		Username: user.Me.Username,
 	}
 	indexTemplate.Execute(w, data)
 }
 
 var showUserTemplate = buildTemplate("show-user.html")
+
 func ShowUser(w http.ResponseWriter, r *http.Request) {
 	session := mongo.Session()
 	defer session.Close()
@@ -48,13 +50,13 @@ func ShowUser(w http.ResponseWriter, r *http.Request) {
 	username := vars["username"]
 
 	type Data struct {
-		UserId string
-		Username string
+		UserId       string
+		Username     string
 		ShowUsername string
 	}
 	data := Data{
-		UserId: user.UserId(),
-		Username: user.Me.Username,
+		UserId:       user.UserId(),
+		Username:     user.Me.Username,
 		ShowUsername: username,
 	}
 	showUserTemplate.Execute(w, data)
@@ -76,11 +78,11 @@ func SigninRedirect(w http.ResponseWriter, r *http.Request) {
 	log.Printf("code: %v", code)
 
 	payload := map[string]string{
-		"client_id": config.Get().ProductHunt.ApiKey,
+		"client_id":     config.Get().ProductHunt.ApiKey,
 		"client_secret": config.Get().ProductHunt.ApiSecret,
-		"redirect_uri": "http://localhost:5050/signin_redirect",
-		"code": code,
-		"grant_type": "authorization_code",
+		"redirect_uri":  "http://localhost:5050/signin_redirect",
+		"code":          code,
+		"grant_type":    "authorization_code",
 	}
 	log.Printf("payload: %v", payload)
 	jsonPayload, _ := json.Marshal(payload)
@@ -121,9 +123,9 @@ func SigninRedirect(w http.ResponseWriter, r *http.Request) {
 	user, err := service.GetUserByPHId(session, phUser.Id)
 	if err != nil {
 		user = model.User{
-			Id: bson.NewObjectId(),
+			Id:   bson.NewObjectId(),
 			PHId: phUser.Id,
-			Me: phUser,
+			Me:   phUser,
 		}
 	}
 	user.AccessToken = accessToken

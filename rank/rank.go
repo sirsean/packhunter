@@ -1,8 +1,8 @@
 package rank
 
 import (
-	"github.com/sirsean/friendly-ph/ph"
 	"github.com/sirsean/friendly-ph/model"
+	"github.com/sirsean/friendly-ph/ph"
 	"log"
 	"sort"
 	"sync"
@@ -14,8 +14,9 @@ type Product struct {
 }
 type productSorter struct {
 	products []Product
-	by func(p1, p2 Product) bool
+	by       func(p1, p2 Product) bool
 }
+
 func (s productSorter) Len() int {
 	return len(s.products)
 }
@@ -55,7 +56,7 @@ func (t syncVoteTracker) Products() []Product {
 		log.Printf("k %v", k)
 		products = append(products, Product{
 			TagVotes: t.numVotes[k],
-			Post: v,
+			Post:     v,
 		})
 	}
 	sorter := productSorter{

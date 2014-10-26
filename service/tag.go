@@ -1,11 +1,11 @@
 package service
 
 import (
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"github.com/sirsean/friendly-ph/config"
 	"github.com/sirsean/friendly-ph/model"
 	"github.com/sirsean/friendly-ph/ph"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var tagCollection = func(session *mgo.Session) *mgo.Collection {
@@ -66,7 +66,7 @@ func UserPublicTags(session *mgo.Session, currentUser model.User, user ph.User) 
 		// if this user is the owner and the tag is public
 		if tag.Owner.Id == mUser.Id.Hex() && tag.Public {
 			tags = append(tags, model.BasicTagSubscribed{
-				BasicTag: t,
+				BasicTag:   t,
 				Subscribed: currentUser.HasTag(t),
 			})
 		}
@@ -77,7 +77,7 @@ func UserPublicTags(session *mgo.Session, currentUser model.User, user ph.User) 
 func EnsureFollowingTag(session *mgo.Session, user *model.User) {
 	if _, err := user.Tag("Following"); err != nil {
 		tag := model.Tag{
-			Name: "Following",
+			Name:   "Following",
 			Public: false,
 		}
 		CreateTag(session, user, &tag)

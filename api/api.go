@@ -1,17 +1,17 @@
 package api
 
 import (
-	"net/http"
-	"strings"
+	"encoding/json"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
-	"github.com/sirsean/friendly-ph/mongo"
 	"github.com/sirsean/friendly-ph/model"
-	"github.com/sirsean/friendly-ph/web"
-	"github.com/sirsean/friendly-ph/service"
-	"github.com/sirsean/friendly-ph/rank"
+	"github.com/sirsean/friendly-ph/mongo"
 	"github.com/sirsean/friendly-ph/ph"
-	"encoding/json"
+	"github.com/sirsean/friendly-ph/rank"
+	"github.com/sirsean/friendly-ph/service"
+	"github.com/sirsean/friendly-ph/web"
+	"net/http"
+	"strings"
 )
 
 var postDecoder = schema.NewDecoder()
@@ -47,8 +47,8 @@ func ShowTag(w http.ResponseWriter, r *http.Request) {
 
 func CreateTag(w http.ResponseWriter, r *http.Request) {
 	type CreateForm struct {
-		Name string `schema:"name"`
-		Public bool `schema:"public"`
+		Name   string `schema:"name"`
+		Public bool   `schema:"public"`
 	}
 
 	session := mongo.Session()
@@ -61,7 +61,7 @@ func CreateTag(w http.ResponseWriter, r *http.Request) {
 	postDecoder.Decode(form, r.PostForm)
 
 	tag := model.Tag{
-		Name: form.Name,
+		Name:   form.Name,
 		Public: form.Public,
 	}
 

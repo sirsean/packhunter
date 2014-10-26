@@ -1,12 +1,12 @@
 package ph
 
 import (
-	"fmt"
-	"log"
-	"github.com/sirsean/friendly-ph/config"
-	"net/http"
 	"encoding/json"
+	"fmt"
+	"github.com/sirsean/friendly-ph/config"
 	"io/ioutil"
+	"log"
+	"net/http"
 	"time"
 )
 
@@ -82,56 +82,56 @@ import (
 */
 
 type User struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-	Headline string `json:"headline"`
-	CreatedAt time.Time `json:"created_at"`
-	Username string `json:"username"`
-	ImageUrl ImageUrl `json:"image_url"`
-	ProfileUrl string `json:"profile_url"`
-	VotesCount int `json:"votes_count"`
-	PostsCount int `json:"posts_count"`
-	MakerOfCount int `json:"maker_of_count"`
-	Email string `json:"email"`
-	Role string `json:"role"`
-	Permissions Permissions `json:"permissions"`
-	Votes []Vote `json:"votes"`
+	Id           int         `json:"id"`
+	Name         string      `json:"name"`
+	Headline     string      `json:"headline"`
+	CreatedAt    time.Time   `json:"created_at"`
+	Username     string      `json:"username"`
+	ImageUrl     ImageUrl    `json:"image_url"`
+	ProfileUrl   string      `json:"profile_url"`
+	VotesCount   int         `json:"votes_count"`
+	PostsCount   int         `json:"posts_count"`
+	MakerOfCount int         `json:"maker_of_count"`
+	Email        string      `json:"email"`
+	Role         string      `json:"role"`
+	Permissions  Permissions `json:"permissions"`
+	Votes        []Vote      `json:"votes"`
 	//Posts []Post `json:"posts"`
 	//MakerOf []MakerOf `json:"maker_of"`
 }
 
 type ImageUrl struct {
-	Small string `json:"48px"`
-	Medium string `json:"73px"`
+	Small    string `json:"48px"`
+	Medium   string `json:"73px"`
 	Original string `json:"original"`
 }
 
 type Permissions struct {
 	CanVotePosts bool `json:"can_vote_posts"`
-	CanComment bool `json:"can_comment"`
-	CanPost bool `json:"can_post"`
+	CanComment   bool `json:"can_comment"`
+	CanPost      bool `json:"can_post"`
 }
 
 type Vote struct {
-	Id int `json:"id"`
+	Id        int       `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
-	PostId int `json:"post_id"`
-	Post Post `json:"post"`
+	PostId    int       `json:"post_id"`
+	Post      Post      `json:"post"`
 }
 
 type Post struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-	Tagline string `json:"tagline"`
-	CreatedAt time.Time `json:"created_at"`
-	Day string `json:"day"`
-	CommentsCount int `json:"comments_count"`
-	VotesCount int `json:"votes_count"`
-	DiscussionUrl string `json:"discussion_url"`
-	RedirectUrl string `json:"redirect_url"`
+	Id            int           `json:"id"`
+	Name          string        `json:"name"`
+	Tagline       string        `json:"tagline"`
+	CreatedAt     time.Time     `json:"created_at"`
+	Day           string        `json:"day"`
+	CommentsCount int           `json:"comments_count"`
+	VotesCount    int           `json:"votes_count"`
+	DiscussionUrl string        `json:"discussion_url"`
+	RedirectUrl   string        `json:"redirect_url"`
 	ScreenshotUrl ScreenshotUrl `json:"screenshot_url"`
-	MakerInside bool `json:"maker_inside"`
-	Makers []User `json:"makers"`
+	MakerInside   bool          `json:"maker_inside"`
+	Makers        []User        `json:"makers"`
 }
 
 type ScreenshotUrl struct {
@@ -192,7 +192,7 @@ func (r FollowingResponse) Users() []User {
 }
 
 type FollowingUser struct {
-	Id int `json:"id"`
+	Id   int  `json:"id"`
 	User User `json:"user"`
 }
 

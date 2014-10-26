@@ -1,10 +1,10 @@
 package service
 
 import (
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
 	"github.com/sirsean/friendly-ph/config"
 	"github.com/sirsean/friendly-ph/model"
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 )
 
 var userCollection = func(session *mgo.Session) *mgo.Collection {

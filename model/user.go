@@ -1,21 +1,21 @@
 package model
 
-import(
-	"gopkg.in/mgo.v2/bson"
-	"github.com/sirsean/friendly-ph/ph"
+import (
 	"errors"
+	"github.com/sirsean/friendly-ph/ph"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type User struct {
-	Id bson.ObjectId `bson:"_id,omitempty"`
-	PHId int `bson:"phid"`
-	AccessToken string `bson:"access_token"`
-	Me ph.User `bson:"me"`
-	Tags []BasicTag
+	Id          bson.ObjectId `bson:"_id,omitempty"`
+	PHId        int           `bson:"phid"`
+	AccessToken string        `bson:"access_token"`
+	Me          ph.User       `bson:"me"`
+	Tags        []BasicTag
 }
 
 type BasicUser struct {
-	Id string
+	Id       string
 	Username string
 }
 
@@ -25,7 +25,7 @@ func (u *User) UserId() string {
 
 func (u *User) Basic() BasicUser {
 	return BasicUser{
-		Id: u.Id.Hex(),
+		Id:       u.Id.Hex(),
 		Username: u.Me.Username,
 	}
 }

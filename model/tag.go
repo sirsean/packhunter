@@ -1,22 +1,22 @@
 package model
 
-import(
-	"gopkg.in/mgo.v2/bson"
+import (
 	"github.com/sirsean/friendly-ph/ph"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Tag struct {
-	Id bson.ObjectId `bson:"_id,omitempty"`
-	Owner BasicUser
-	Name string
+	Id     bson.ObjectId `bson:"_id,omitempty"`
+	Owner  BasicUser
+	Name   string
 	Public bool
-	Users []ph.User
+	Users  []ph.User
 }
 
 type BasicTag struct {
-	Id string
-	OwnerId string
-	Name string
+	Id        string
+	OwnerId   string
+	Name      string
 	UserCount int
 }
 
@@ -27,9 +27,9 @@ type BasicTagSubscribed struct {
 
 func (t *Tag) Basic() BasicTag {
 	return BasicTag{
-		Id: t.Id.Hex(),
-		OwnerId: t.Owner.Id,
-		Name: t.Name,
+		Id:        t.Id.Hex(),
+		OwnerId:   t.Owner.Id,
+		Name:      t.Name,
 		UserCount: len(t.Users),
 	}
 }
