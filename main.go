@@ -25,13 +25,15 @@ func main() {
 	router.HandleFunc("/", controller.Index).Methods("GET")
 	router.HandleFunc("/signin", controller.Signin).Methods("GET")
 	router.HandleFunc("/signin_redirect", controller.SigninRedirect).Methods("GET")
+	router.HandleFunc("/user/{username}", controller.ShowUser).Methods("GET")
 
 	router.HandleFunc("/api/tags/mine", api.ListMyTags).Methods("GET")
 	router.HandleFunc("/api/tags/{id}", api.ShowTag).Methods("GET")
 	router.HandleFunc("/api/tags/{id}/products", api.GetTagProducts).Methods("GET")
 	router.HandleFunc("/api/tags", api.CreateTag).Methods("POST")
+	router.HandleFunc("/api/user/{username}", api.ShowUser).Methods("GET")
 
-	router.HandleFunc("/api/user/logout", api.UserLogout).Methods("GET")
+	router.HandleFunc("/api/logout", api.UserLogout).Methods("GET")
 
 	router.PathPrefix("/").Handler(http.FileServer(http.Dir(fmt.Sprintf("%s/static/", config.Get().Host.Path))))
 	http.Handle("/", router)

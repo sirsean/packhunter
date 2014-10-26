@@ -1,0 +1,41 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+
+<link rel="import" href="/elements/fph-show-user-service.html">
+
+<polymer-element name="fph-page-user" attributes="username">
+  <template>
+    <fph-show-user-service
+      username="{{username}}"
+      user="{{user}}"></fph-show-user-service>
+
+    <h1>{{user.name}}</h1>
+    <img src="{{user.image_url.original}}" />
+    <p>{{user.created_at}}</p>
+    <p>{{user.headline}}</p>
+    <p>Maker: {{user.maker_of_count}}</p>
+    <p>Posts: {{user.posts_count}}</p>
+    <p>Votes: {{user.votes_count}}</p>
+    <p><a target="_blank" href="{{user.profile_url}}">PH Profile</a></p>
+
+    <div layout vertical>
+      <template repeat="{{vote in user.votes}}">
+        <div layout horizontal center>
+          <p>Voted: {{vote.created_at}}</p>
+          <p>Comments: {{vote.post.comments_count}}</p>
+          <p>Posted: {{vote.post.created_at}}</p>
+          <p>Day: {{vote.post.day}}</p>
+          <p><a target="_blank" href="{{vote.post.discussion_url}}">Discussion</a></p>
+          <p>Maker inside: {{vote.post.maker_inside}}</p>
+          <p>Name: {{vote.post.name}}</p>
+          <p>Tagline: {{vote.post.tagline}}</p>
+          <p>Votes: {{vote.post.votes_count}}</p>
+        </div>
+        <img src="{{vote.post.screenshot_url['300px']}}" width="300px" />
+      </template>
+    </div>
+  </template>
+  <script>
+  Polymer({
+  });
+  </script>
+</polymer-element>

@@ -1,0 +1,33 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="fph-show-user-service" attributes="username user">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+
+    <core-ajax id="service"
+      url="/api/user/{{username}}"
+      method="get"
+      on-core-response="{{loaded}}"
+      handleAs="json"
+      auto></core-ajax>
+  </template>
+  <script>
+  Polymer({
+    created: function() {
+      this.user = {};
+    },
+    load: function() {
+      this.$.service.go();
+    },
+    loaded: function() {
+      this.user = this.$.service.response;
+      console.log(this.user);
+    }
+  });
+  </script>
+</polymer-element>

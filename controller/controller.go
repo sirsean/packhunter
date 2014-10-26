@@ -3,7 +3,7 @@ package controller
 import (
 	"fmt"
 	"gopkg.in/mgo.v2/bson"
-	//"github.com/gorilla/mux"
+	"github.com/gorilla/mux"
 	"github.com/sirsean/friendly-ph/config"
 	"github.com/sirsean/friendly-ph/model"
 	"github.com/sirsean/friendly-ph/mongo"
@@ -19,7 +19,6 @@ import (
 )
 
 var indexTemplate = buildTemplate("index.html")
-
 func Index(w http.ResponseWriter, r *http.Request) {
 	session := mongo.Session()
 	defer session.Close()
@@ -30,14 +29,35 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	type Data struct {
 		UserId string
 		Username string
-		User   model.User
 	}
 	data := Data{
 		UserId: user.UserId(),
 		Username: user.Me.Username,
-		User:   user,
 	}
 	indexTemplate.Execute(w, data)
+}
+
+var showUserTemplate = buildTemplate("show-user.html")
+func ShowUser(w http.ResponseWriter, r *http.Request) {
+	session := mongo.Session()
+	defer session.Close()
+
+	user, _ := web.CurrentUser(r, session)
+
+	vars := mux.Vars(r)
+	username := vars["username"]
+
+	type Data struct {
+		UserId string
+		Username string
+		ShowUsername string
+	}
+	data := Data{
+		UserId: user.UserId(),
+		Username: user.Me.Username,
+		ShowUsername: username,
+	}
+	showUserTemplate.Execute(w, data)
 }
 
 func Signin(w http.ResponseWriter, r *http.Request) {

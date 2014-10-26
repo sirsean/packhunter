@@ -47,8 +47,8 @@
       <div class="content">
         <div hidden?="{{!tag.Id}}">
           <paper-tabs id="tabs" valueattr="name" selected="products">
-            <paper-tab name="products">Products</paper-tab>
-            <paper-tab name="users">Users</paper-tab>
+            <paper-tab name="products">Hunts</paper-tab>
+            <paper-tab name="users">Hunters</paper-tab>
           </paper-tabs>
           <div id="products" hidden?="{{selected != 'products'}}">
             <template if="{{products.length == 0}}">
@@ -70,7 +70,15 @@
             </template>
             <template if="{{tag.Users.length != 0}}">
               <template repeat="{{user in tag.Users}}">
-                <p>{{user.name}}</p>
+                <div layout horizontal center>
+                  <img src="{{user.image_url['48px']}}" />
+                  <p>{{user.name}}</p>
+                  <p>{{user.headline}}</p>
+                  <p>{{user.created_at}}</p>
+                  <p>{{user.username}}</p>
+                  <p><a target="_blank" href="{{user.profile_url}}">PH Profile</a></p>
+                  <p><a href="/user/{{user.username}}">More</a></p>
+                </div>
               </template>
             </template>
           </div>

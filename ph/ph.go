@@ -166,6 +166,18 @@ func GetUserById(accessToken string, userId int) User {
 	return r.User
 }
 
+func GetUserByUsername(accessToken string, username string) User {
+	url := fmt.Sprintf("%v/users/%v", config.Get().ProductHunt.Endpoint, username)
+	resp, _ := get(accessToken, url)
+	defer resp.Body.Close()
+
+	body, _ := ioutil.ReadAll(resp.Body)
+	r := UserResponse{}
+	json.Unmarshal(body, &r)
+
+	return r.User
+}
+
 type FollowingResponse struct {
 	Following []FollowingUser `json:"following"`
 }
