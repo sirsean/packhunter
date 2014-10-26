@@ -1,6 +1,4 @@
 <link rel="import" href="/bower_components/polymer/polymer.html">
-<link rel="import" href="/bower_components/core-scaffold/core-scaffold.html">
-<link rel="import" href="/bower_components/core-header-panel/core-header-panel.html">
 <link rel="import" href="/bower_components/core-menu/core-menu.html">
 <link rel="import" href="/bower_components/core-item/core-item.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
@@ -22,15 +20,16 @@
   <template>
     <style>
     core-menu {
+      width: 370px;
       margin: 0px;
       font-family: "Open Sans", sans-serif;
+      border-right: 2px solid #DA552F;
     }
 
     core-item.tag {
       height: 60px;
       color: #DA552F;
       border-bottom: 2px solid #DA552F;
-      border-right: 2px solid #DA552F;
     }
 
     core-item.tag .name {
@@ -76,25 +75,21 @@
       tag="{{tag}}"
       on-hunters-set="{{onHuntersSet}}"></fph-set-hunters-service>
 
-    <core-scaffold>
-      <core-header-panel navigation flex>
-        <core-menu on-core-select="{{tagSelected}}">
-          <template repeat="{{tag in tags}}">
-            <core-item id="{{tag.Id}}" class="tag">
-              <div layout horizontal center flex>
-                <div class="name"># {{tag.Name}}</div>
-                <div flex></div>
-                <div class="count">{{tag.UserCount}} hunters</div>
-              </div>
-            </core-item>
-          </template>
-          <core-item label="New Pack" id="newTag"></core-item>
-        </core-menu>
-      </core-header-panel>
+    <div layout horizontal>
+      <core-menu on-core-select="{{tagSelected}}">
+        <template repeat="{{tag in tags}}">
+          <core-item id="{{tag.Id}}" class="tag">
+            <div layout horizontal center flex>
+              <div class="name"># {{tag.Name}}</div>
+              <div flex></div>
+              <div class="count">{{tag.UserCount}} hunters</div>
+            </div>
+          </core-item>
+        </template>
+        <core-item label="New Pack" id="newTag"></core-item>
+      </core-menu>
 
-      <span tool>{{tag.Name}}</span>
-
-      <div class="content">
+      <div flex>
         <div hidden?="{{!tag.Id}}">
           <paper-tabs id="tabs" valueattr="name" selected="products">
             <paper-tab name="products">Hunts</paper-tab>
@@ -153,7 +148,7 @@
           </template>
         </div>
       </div>
-    </core-scaffold>
+    </div>
 
     <paper-dialog id="setHuntersDialog" heading="Hunters" transition="paper-dialog-transition-bottom">
       <div layout vertical>
