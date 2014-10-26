@@ -56,11 +56,17 @@
             </template>
             <template if="{{products.length != 0}}">
               <template repeat="{{product in products}}">
-                <p>
-                  {{product.tag_votes}}:
-                  <a target="_blank" href="{{product.discussion_url}}">{{product.name}}</a>
-                  {{product.created_at}}
-                </p>
+                <div layout horizontal center>
+                  <p>{{product.tag_votes}}</p>
+                  <p><a target="_blank" href="{{product.discussion_url}}">{{product.name}}</a></p>
+                  <p>{{product.tagline}}</p>
+                  <p>{{product.created_at}}</p>
+                  <p>{{product.day}}</p>
+                  <p>Maker: {{product.maker_inside}}</p>
+                  <p><a target="_blank" href="{{product.redirect_url}}">Visit</a></p>
+                  <p>Comments: {{product.comments_count}}</p>
+                  <p>Votes: {{product.votes_count}}</p>
+                </div>
               </template>
             </template>
           </div>
