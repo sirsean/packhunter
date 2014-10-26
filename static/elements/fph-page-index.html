@@ -111,6 +111,35 @@
       font-size: 20px;
       color: #666666;
     }
+
+    #users {
+      padding: 30px;
+    }
+
+    .user {
+      font-family: "Open Sans", sans-serif;
+      border-bottom: 1px solid #DA552F;
+      padding: 10px 8px;
+    }
+
+    .user a {
+      color: #DA552F;
+      text-decoration: none;
+    }
+
+    .user .detail {
+      padding: 0 10px;
+    }
+
+    .user .detail .name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .user .detail .headline {
+      font-size: 16px;
+      color: #666666;
+    }
     </style>
 
     <fph-my-tags-service
@@ -192,14 +221,15 @@
             </template>
             <template if="{{tag.Users.length != 0}}">
               <template repeat="{{user in tag.Users}}">
-                <div layout horizontal center>
+                <div layout horizontal center class="user">
                   <img src="{{user.image_url['48px']}}" width="48px" />
-                  <p>{{user.name}}</p>
-                  <p>{{user.headline}}</p>
-                  <p>{{user.created_at}}</p>
-                  <p>{{user.username}}</p>
-                  <p><a target="_blank" href="{{user.profile_url}}">PH Profile</a></p>
-                  <p><a href="/user/{{user.username}}">More</a></p>
+                  <div layout vertical start class="detail" flex>
+                    <span class="name">{{user.name}}</span>
+                    <span class="headline">{{user.headline}}</span>
+                  </div>
+                  <div layout vertical start>
+                    <a target="_blank" href="{{user.profile_url}}"><strong>{{user.username}}</strong> on Product Hunt</a>
+                  </div>
                 </div>
               </template>
             </template>

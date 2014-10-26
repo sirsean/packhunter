@@ -23,19 +23,25 @@
       text-transform: uppercase;
       font-size: 40px;
     }
+
+    .logo {
+      padding: 3px 12px;
+    }
     </style>
 
     <fph-user-service id="user_service"></fph-user-service>
 
     <div layout horizontal justified center>
-      <div style="height:90px;">logo</div>
+      <div class="logo"><img src="/img/ph-wolf-90.png" /></div>
       <div class="title">
         <a href="/">PackHunter</a>
       </div>
       <div>
         <template if="{{loggedIn}}">
           <div layout horizontal center>
+            <!--
             <span><a href="/user/{{username}}">{{username}}</a> is logged in</span>
+            -->
             <span><paper-button label="Log out" on-tap="{{logoutTapped}}"></paper-button></span>
           </div>
         </template>
