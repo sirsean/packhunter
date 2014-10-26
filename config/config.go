@@ -38,7 +38,7 @@ func Get() Config {
 }
 
 func Load() {
-	err := gcfg.ReadFileInto(&cfg, "/etc/friendly-ph/friendly-ph.gcfg")
+	err := gcfg.ReadFileInto(&cfg, "/etc/packhunter/packhunter.gcfg")
 	if err != nil {
 		log.Printf("Failed to read config: %v", err)
 	} else {

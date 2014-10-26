@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/sirsean/friendly-ph/api"
-	"github.com/sirsean/friendly-ph/config"
-	"github.com/sirsean/friendly-ph/controller"
-	"github.com/sirsean/friendly-ph/mongo"
-	"github.com/sirsean/friendly-ph/service"
+	"github.com/sirsean/packhunter/api"
+	"github.com/sirsean/packhunter/config"
+	"github.com/sirsean/packhunter/controller"
+	"github.com/sirsean/packhunter/mongo"
+	"github.com/sirsean/packhunter/service"
 	"log"
 	"net/http"
 )

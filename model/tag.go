@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/sirsean/friendly-ph/ph"
+	"github.com/sirsean/packhunter/ph"
 	"gopkg.in/mgo.v2/bson"
 )
 

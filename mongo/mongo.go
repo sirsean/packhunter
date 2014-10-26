@@ -1,7 +1,7 @@
 package mongo
 
 import (
-	"github.com/sirsean/friendly-ph/config"
+	"github.com/sirsean/packhunter/config"
 	"gopkg.in/mgo.v2"
 	"log"
 	//"gopkg.in/mgo.v2/bson"

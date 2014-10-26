@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/sirsean/friendly-ph/config"
-	"github.com/sirsean/friendly-ph/model"
-	"github.com/sirsean/friendly-ph/ph"
+	"github.com/sirsean/packhunter/config"
+	"github.com/sirsean/packhunter/model"
+	"github.com/sirsean/packhunter/ph"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )

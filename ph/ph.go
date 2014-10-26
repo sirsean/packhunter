@@ -3,7 +3,7 @@ package ph
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sirsean/friendly-ph/config"
+	"github.com/sirsean/packhunter/config"
 	"io/ioutil"
 	"log"
 	"net/http"

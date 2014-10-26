@@ -3,11 +3,11 @@ package api
 import (
 	"encoding/json"
 	"github.com/gorilla/mux"
-	"github.com/sirsean/friendly-ph/model"
-	"github.com/sirsean/friendly-ph/mongo"
-	"github.com/sirsean/friendly-ph/ph"
-	"github.com/sirsean/friendly-ph/service"
-	"github.com/sirsean/friendly-ph/web"
+	"github.com/sirsean/packhunter/model"
+	"github.com/sirsean/packhunter/mongo"
+	"github.com/sirsean/packhunter/ph"
+	"github.com/sirsean/packhunter/service"
+	"github.com/sirsean/packhunter/web"
 	"net/http"
 	"strings"
 )
