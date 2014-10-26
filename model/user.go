@@ -41,5 +41,26 @@ func (u *User) Tag(name string) (BasicTag, error) {
 }
 
 func (u *User) AddTag(tag Tag) {
-	u.Tags = append(u.Tags, tag.Basic())
+	if !u.HasTag(tag.Basic()) {
+		u.Tags = append(u.Tags, tag.Basic())
+	}
+}
+
+func (u *User) RemoveTag(tag Tag) {
+	if index := u.IndexOfTag(tag.Basic()); index != -1 {
+		u.Tags = append(u.Tags[:index], u.Tags[index+1:]...)
+	}
+}
+
+func (u *User) HasTag(tag BasicTag) bool {
+	return u.IndexOfTag(tag) != -1
+}
+
+func (u *User) IndexOfTag(tag BasicTag) int {
+	for i, t := range u.Tags {
+		if t.Id == tag.Id {
+			return i
+		}
+	}
+	return -1
 }

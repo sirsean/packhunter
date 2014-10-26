@@ -8,6 +8,8 @@
 <link rel="import" href="/elements/fph-my-tags-service.html">
 <link rel="import" href="/elements/fph-show-user-service.html">
 <link rel="import" href="/elements/fph-set-tags-service.html">
+<link rel="import" href="/elements/fph-subscribe-button.html">
+<link rel="import" href="/elements/fph-unsubscribe-button.html">
 
 <polymer-element name="fph-page-user" attributes="username">
   <template>
@@ -32,7 +34,29 @@
           <li>{{tag.Name}}</li>
         </template>
         </ul>
-        <paper-button label="Add to Pack" on-tap="{{addToPackTapped}}"></paper-button>
+        <paper-button label="Set Packs" on-tap="{{addToPackTapped}}"></paper-button>
+      </div>
+    </template>
+    <template if="{{user.public_tags && user.public_tags.length != 0}}">
+      <div>
+        <h3>Public Packs</h3>
+        <ul>
+        <template repeat="{{tag in user.public_tags}}">
+          <li>
+            {{tag.Name}}
+            <template if="{{tag.Subscribed}}">
+              <fph-unsubscribe-button
+                tag="{{tag}}"
+                on-unsubscribed="{{onUnsubscribed}}"></fph-unsubscribe-button>
+            </template>
+            <template if="{{!tag.Subscribed}}">
+              <fph-subscribe-button
+                tag="{{tag}}"
+                on-subscribed="{{onSubscribed}}"></fph-subscribe-button>
+            </template>
+          </li>
+        </template>
+        </ul>
       </div>
     </template>
     <img src="{{user.image_url.original}}" />
@@ -63,10 +87,12 @@
     <paper-dialog id="addTagDialog" heading="Packs" transition="paper-dialog-transition-bottom">
       <div layout vertical>
         <template repeat="{{tag in tags}}">
-          <div layout horizontal center style="padding-bottom:20px">
-            <paper-checkbox checked="{{checked[tag.Id]}}"></paper-checkbox>
-            {{tag.Name}}
-          </div>
+          <template if="{{tag.OwnerId == loggedInUserId}}">
+            <div layout horizontal center style="padding-bottom:20px">
+              <paper-checkbox checked="{{checked[tag.Id]}}"></paper-checkbox>
+              {{tag.Name}}
+            </div>
+          </template>
         </template>
       </div>
       <paper-button label="Cancel" dismissive></paper-button>
@@ -76,6 +102,7 @@
   <script>
   Polymer({
     ready: function() {
+      this.loggedInUserId = this.$.user_service.user_id;
       this.loggedInUsername = this.$.user_service.username;
     },
     computed: {
@@ -110,6 +137,12 @@
       this.$.setTagsService.load(tagIds);
     },
     onTagsSet: function(e) {
+      this.$.showUserService.load();
+    },
+    onSubscribed: function() {
+      this.$.showUserService.load();
+    },
+    onUnsubscribed: function() {
       this.$.showUserService.load();
     }
   });

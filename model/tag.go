@@ -15,13 +15,22 @@ type Tag struct {
 
 type BasicTag struct {
 	Id string
+	OwnerId string
 	Name string
+	UserCount int
+}
+
+type BasicTagSubscribed struct {
+	BasicTag
+	Subscribed bool
 }
 
 func (t *Tag) Basic() BasicTag {
 	return BasicTag{
 		Id: t.Id.Hex(),
+		OwnerId: t.Owner.Id,
 		Name: t.Name,
+		UserCount: len(t.Users),
 	}
 }
 

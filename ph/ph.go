@@ -131,6 +131,7 @@ type Post struct {
 	RedirectUrl string `json:"redirect_url"`
 	ScreenshotUrl ScreenshotUrl `json:"screenshot_url"`
 	MakerInside bool `json:"maker_inside"`
+	Makers []User `json:"makers"`
 }
 
 type ScreenshotUrl struct {

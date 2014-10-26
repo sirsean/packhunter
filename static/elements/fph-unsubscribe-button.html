@@ -1,0 +1,24 @@
+<link rel="import" href="/bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="/bower_components/paper-button/paper-button.html">
+
+<polymer-element name="fph-unsubscribe-button" attributes="tag">
+  <template>
+    <core-ajax id="ajax"
+      url="/api/tags/{{tag.Id}}/unsubscribe"
+      method="post"
+      on-core-response="{{loaded}}"></core-ajax>
+
+    <paper-button label="Unsubscribe" on-tap="{{unsubscribeTapped}}"></paper-button>
+  </template>
+  <script>
+  Polymer({
+    unsubscribeTapped: function() {
+      this.$.ajax.go();
+    },
+    loaded: function() {
+      this.fire("unsubscribed", {});
+    }
+  });
+  </script>
+</polymer-element>

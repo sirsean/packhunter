@@ -12,6 +12,19 @@ import (
 	"github.com/sirsean/friendly-ph/model"
 )
 
+func ListMyUsers(w http.ResponseWriter, r *http.Request) {
+	session := mongo.Session()
+	defer session.Close()
+
+	currentUser, _ := web.CurrentUser(r, session)
+
+	t, _ := currentUser.Tag("Following")
+	tag, _ := service.GetTagByIdHex(session, t.Id)
+
+	response, _ := json.Marshal(tag.Users)
+	w.Write(response)
+}
+
 func ShowUser(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	username := vars["username"]
@@ -24,15 +37,18 @@ func ShowUser(w http.ResponseWriter, r *http.Request) {
 	user := ph.GetUserByUsername(currentUser.AccessToken, username)
 
 	tags, _ := service.TagsUserIsOn(session, currentUser, user)
+	publicTags, _ := service.UserPublicTags(session, currentUser, user)
 
 	type UserResponse struct {
 		ph.User
 		Tags []model.BasicTag `json:"tags"`
+		PublicTags []model.BasicTagSubscribed `json:"public_tags"`
 	}
 
 	response, _ := json.Marshal(UserResponse{
 		User: user,
 		Tags: tags,
+		PublicTags: publicTags,
 	})
 	w.Write(response)
 }

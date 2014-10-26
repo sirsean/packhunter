@@ -4,20 +4,27 @@
 <link rel="import" href="/bower_components/core-menu/core-menu.html">
 <link rel="import" href="/bower_components/core-item/core-item.html">
 <link rel="import" href="/bower_components/paper-button/paper-button.html">
+<link rel="import" href="/bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="/bower_components/paper-input/paper-input.html">
 <link rel="import" href="/bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="/bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="/bower_components/paper-dialog/paper-dialog-transition.html">
 
 <link rel="import" href="/elements/fph-my-tags-service.html">
+<link rel="import" href="/elements/fph-all-users-service.html">
 <link rel="import" href="/elements/fph-show-tag-service.html">
 <link rel="import" href="/elements/fph-tag-products-service.html">
 <link rel="import" href="/elements/fph-create-tag-service.html">
+<link rel="import" href="/elements/fph-set-hunters-service.html">
 
 <polymer-element name="fph-page-index">
   <template>
     <fph-my-tags-service
       id="myTags"
       tags="{{tags}}"></fph-my-tags-service>
+    <fph-all-users-service
+      users="{{users}}"></fph-all-users-service>
     <fph-show-tag-service
       id="showTag"
       tagId="{{tagId}}"
@@ -31,12 +38,22 @@
       name="{{newTagName}}"
       public="{{newTagPublic}}"
       on-tag-created="{{onTagCreated}}"></fph-create-tag-service>
+    <fph-set-hunters-service
+      id="setHuntersService"
+      tag="{{tag}}"
+      on-hunters-set="{{onHuntersSet}}"></fph-set-hunters-service>
 
     <core-scaffold>
       <core-header-panel navigation flex>
         <core-menu on-core-select="{{tagSelected}}">
           <template repeat="{{tag in tags}}">
-            <core-item label="{{tag.Name}}" id="{{tag.Id}}"></core-item>
+            <core-item id="{{tag.Id}}">
+              <div layout horizontal center style="width:100%;">
+                <div>{{tag.Name}}</div>
+                <div flex></div>
+                <div>{{tag.UserCount}}</div>
+              </div>
+            </core-item>
           </template>
           <core-item label="New Tag" id="newTag"></core-item>
         </core-menu>
@@ -71,13 +88,16 @@
             </template>
           </div>
           <div id="users" hidden?="{{selected != 'users'}}">
+            <div>
+              <paper-button label="Set Hunters" on-tap="{{setHuntersTapped}}"></paper-button>
+            </div>
             <template if="{{tag.Users.length == 0}}">
               <p>No users</p>
             </template>
             <template if="{{tag.Users.length != 0}}">
               <template repeat="{{user in tag.Users}}">
                 <div layout horizontal center>
-                  <img src="{{user.image_url['48px']}}" />
+                  <img src="{{user.image_url['48px']}}" width="48px" />
                   <p>{{user.name}}</p>
                   <p>{{user.headline}}</p>
                   <p>{{user.created_at}}</p>
@@ -101,12 +121,44 @@
         </div>
       </div>
     </core-scaffold>
+
+    <paper-dialog id="setHuntersDialog" heading="Hunters" transition="paper-dialog-transition-bottom">
+      <div layout vertical>
+        <template repeat="{{u in users}}">
+          <div layout horizontal center style="padding-bottom:20px;">
+            <paper-checkbox checked="{{checked[u.username]}}"></paper-checkbox>
+            {{u.username}}
+          </div>
+        </template>
+      </div>
+      <paper-button label="Cancel" dismissive></paper-button>
+      <paper-button label="Save" affirmative autofocus on-tap="{{saveHuntersTapped}}"></paper-button>
+    </paper-dialog>
   </template>
   <script>
   Polymer({
     newTagName: "",
     newTagPublic: true,
     selected: "products",
+    computed: {
+      checked: "computeChecked(users, tag)"
+    },
+    computeChecked: function(users, tag) {
+      var c = {};
+      console.log("computeChecked");
+      console.log(users);
+      console.log(tag);
+      if (users && tag && tag.Users) {
+        users.forEach(function(user) {
+          tag.Users.forEach(function(u) {
+            if (user.username == u.username) {
+              c[u.username] = true;
+            }
+          });
+        });
+      }
+      return c;
+    },
     ready: function() {
       console.log("Ready");
       console.log(this.$.tabs);
@@ -141,6 +193,22 @@
       console.log(e);
       console.log(detail);
       this.$.myTags.load();
+    },
+    setHuntersTapped: function() {
+      this.$.setHuntersDialog.toggle();
+    },
+    saveHuntersTapped: function() {
+      var usernames = [];
+      Object.keys(this.checked).forEach(function(key) {
+        if (this.checked[key]) {
+          usernames.push(key);
+        }
+      }.bind(this));
+      this.$.setHuntersService.load(usernames);
+    },
+    onHuntersSet: function() {
+      this.$.showTag.load();
+      this.$.tagProducts.load();
     }
   });
   </script>

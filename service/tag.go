@@ -51,6 +51,29 @@ func TagsUserIsOn(session *mgo.Session, currentUser model.User, user ph.User) ([
 	return tags, nil
 }
 
+func UserPublicTags(session *mgo.Session, currentUser model.User, user ph.User) ([]model.BasicTagSubscribed, error) {
+	tags := make([]model.BasicTagSubscribed, 0)
+	mUser, err := GetUserByPHId(session, user.Id)
+	if err != nil {
+		return nil, err
+	}
+	for _, t := range mUser.Tags {
+		tag, err := GetTagByIdHex(session, t.Id)
+		if err != nil {
+			return nil, err
+		}
+
+		// if this user is the owner and the tag is public
+		if tag.Owner.Id == mUser.Id.Hex() && tag.Public {
+			tags = append(tags, model.BasicTagSubscribed{
+				BasicTag: t,
+				Subscribed: currentUser.HasTag(t),
+			})
+		}
+	}
+	return tags, nil
+}
+
 func EnsureFollowingTag(session *mgo.Session, user *model.User) {
 	if _, err := user.Tag("Following"); err != nil {
 		tag := model.Tag{
