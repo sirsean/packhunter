@@ -12,14 +12,23 @@ To deploy the backend, you will need to compile it for your production environme
 You will need this file whether you're developing locally or deploying to a server.
 
 ```
-[CtaApi]
-key = xxxxxxxxxx
+[Mongo]
+hosts = localhost:27017
+authdatabase =
+authusername =
+authpassword =
+database = packhunter
 [Host]
+name = "http://packhunter.co"
 port = :80
 path = /path/to/packhunter
+[ProductHunt]
+endpoint = "https://api.producthunt.com/v1"
+apikey = PRODUCT_HUNT_API_KEY
+apisecret = PRODUCT_HUNT_API_SECRET
+[CookieStore]
+authenticationkey = SOME_SECRET_KEY
 ```
-
-Get your API key [from the CTA](http://www.transitchicago.com/developers/traintracker.aspx).
 
 ## systemd config
 
